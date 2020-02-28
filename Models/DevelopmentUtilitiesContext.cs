@@ -25,7 +25,7 @@ namespace BasicCSharpRESTful.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-GIV9OCS\\MSSQLSERVER01;User ID=Dev;Password=Password_21600681;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Server=tcp:developmentutilities.database.windows.net,1433;Initial Catalog=DevelopmentUtilitiesV1;Persist Security Info=False;User ID=dev;Password=Password_21600681;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
