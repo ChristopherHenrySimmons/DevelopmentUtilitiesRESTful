@@ -11,7 +11,7 @@ namespace BasicCSharpRESTful.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ProblemsController : ControllerBase
+    public class ProblemsController : Controller//Base
     {
         private readonly DevelopmentUtilitiesContext _context;
 
@@ -22,14 +22,14 @@ namespace BasicCSharpRESTful.Controllers
 
         // GET: api/Problems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Problems>>> GetProblems()
+        public async Task<ActionResult<IEnumerable<ProblemsV1>>> GetProblems()
         {
             return await _context.Problems.ToListAsync();
         }
 
         // GET: api/Problems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Problems>> GetProblems(int id)
+        public async Task<ActionResult<ProblemsV1>> GetProblems(int id)
         {
             var problems = await _context.Problems.FindAsync(id);
 
@@ -43,37 +43,28 @@ namespace BasicCSharpRESTful.Controllers
 
         // PUT: api/Problems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProblems(int id, Problems problems)
+        public async Task<IActionResult> PutProblems(int id, ProblemsV1 problems)
         {
-            if (id != problems.Id)
-            {
-                return BadRequest();
-            }
+               if (id != problems.Id)
+               {
+                    return BadRequest();
+               }
 
-            _context.Entry(problems).State = EntityState.Modified;
+               try
+               {
+                    _context.Database.ExecuteSqlCommand("problemsUpdate @p0, @p1, @p2, @p3, @p4", parameters: new[] { id.ToString(), problems.Title, problems.Solution, problems.SolutionLink, problems.Details });
+               }
+               catch (Exception e)
+               {
+                    return BadRequest(e);
+               }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProblemsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+               return NoContent();
+          }
 
         // POST: api/Problems
         [HttpPost]
-        public async Task<ActionResult<Problems>> PostProblems(Problems problems)
+        public async Task<ActionResult<ProblemsV1>> PostProblems(ProblemsV1 problems)
         {
             _context.Problems.Add(problems);
             await _context.SaveChangesAsync();
@@ -83,7 +74,7 @@ namespace BasicCSharpRESTful.Controllers
 
         // DELETE: api/Problems/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Problems>> DeleteProblems(int id)
+        public async Task<ActionResult<ProblemsV1>> DeleteProblems(int id)
         {
             var problems = await _context.Problems.FindAsync(id);
             if (problems == null)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BasicCSharpRESTful.Models;
 using BasicCSharpRESTful.Options;
+using DevelopmentUtilitiesRESTful.Models;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Formatter;
 using Microsoft.AspNetCore.Builder;
@@ -54,13 +55,18 @@ namespace BasicCSharpRESTful
                services.AddOData();
 
                services.AddSwaggerGen(x => {
-                    x.SwaggerDoc("v1", new Info { Tile = "DevelopmentUtility RESTful API", Version = "v1" });
+                    x.SwaggerDoc("v1", new Info { Title = "DevelopmentUtility RESTful API", Version = "v1" });
                     });
 
+               services.AddDbContext<DevelopmentUtilitiesV2Context>
+               (options => options.UseSqlServer
+                    (Configuration["Data:DevelopmentUtilitiesV2Connection:ConnectionString"])
+               );
                services.AddDbContext<DevelopmentUtilitiesContext>
                     (options => options.UseSqlServer
                          (Configuration["Data:DevelopmentUtilitiesConnection:ConnectionString"])
                     );
+               
           }
 
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

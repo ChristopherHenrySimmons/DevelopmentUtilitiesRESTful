@@ -15,17 +15,17 @@ namespace BasicCSharpRESTful.Models
         {
         }
 
-        public virtual DbSet<Commands> Commands { get; set; }
-        public virtual DbSet<Exercises> Exercises { get; set; }
-        public virtual DbSet<Problems> Problems { get; set; }
-        public virtual DbSet<Resources> Resources { get; set; }
+        public virtual DbSet<CommandsV1> Commands { get; set; }
+        public virtual DbSet<ExercisesV1> Exercises { get; set; }
+        public virtual DbSet<ProblemsV1> Problems { get; set; }
+        public virtual DbSet<ResourcesV1> Resources { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:developmentutilities.database.windows.net,1433;Initial Catalog=DevelopmentUtilitiesV1;Persist Security Info=False;User ID=dev;Password=Password_21600681;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-GIV9OCS\\MSSQLSERVER01;User ID=RestfulAPIUser;Password=Password_21600681;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 
@@ -33,7 +33,7 @@ namespace BasicCSharpRESTful.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
-            modelBuilder.Entity<Commands>(entity =>
+            modelBuilder.Entity<CommandsV1>(entity =>
             {
                 entity.Property(e => e.Command)
                     .IsRequired()
@@ -43,12 +43,12 @@ namespace BasicCSharpRESTful.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Tile)
+                entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Exercises>(entity =>
+            modelBuilder.Entity<ExercisesV1>(entity =>
             {
                 entity.HasIndex(e => e.Exercise)
                     .HasName("UQ__Exercise__051A1072C65BE6D9")
@@ -60,23 +60,23 @@ namespace BasicCSharpRESTful.Models
 
                 entity.Property(e => e.ExerciseLevel).HasMaxLength(50);
 
-                entity.Property(e => e.ExpectedSolution).HasMaxLength(50);
+                entity.Property(e => e.ExpectedSolution).HasMaxLength(250);
 
-                entity.Property(e => e.Langues).HasMaxLength(50);
+                entity.Property(e => e.Langues).HasMaxLength(250);
 
-                entity.Property(e => e.ProjectType).HasMaxLength(50);
+                entity.Property(e => e.ProjectType).HasMaxLength(250);
 
                 entity.Property(e => e.Solution).HasMaxLength(250);
 
                 entity.Property(e => e.VarableData).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Problems>(entity =>
+            modelBuilder.Entity<ProblemsV1>(entity =>
             {
                 entity.Property(e => e.Title).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Resources>(entity =>
+            modelBuilder.Entity<ResourcesV1>(entity =>
             {
                 entity.HasIndex(e => e.Title)
                     .HasName("UQ__Resource__2CB664DC1CAB4FC0")

@@ -4,7 +4,7 @@ namespace BasicCSharpRESTful
 {
      internal class Info : OpenApiInfo
      {
-          public string Tile { get; set; }
+          public string Title { get; set; }
           public string Version { get; set; }
      }
 }

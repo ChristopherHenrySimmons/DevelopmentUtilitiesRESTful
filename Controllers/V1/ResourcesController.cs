@@ -11,7 +11,7 @@ namespace BasicCSharpRESTful.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ResourcesController : ControllerBase
+    public class ResourcesController : Controller//Base
     {
         private readonly DevelopmentUtilitiesContext _context;
 
@@ -22,14 +22,14 @@ namespace BasicCSharpRESTful.Controllers
 
         // GET: api/Resources
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Resources>>> GetResources()
+        public async Task<ActionResult<IEnumerable<ResourcesV1>>> GetResources()
         {
             return await _context.Resources.ToListAsync();
         }
 
         // GET: api/Resources/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Resources>> GetResources(int id)
+        public async Task<ActionResult<ResourcesV1>> GetResources(int id)
         {
             var resources = await _context.Resources.FindAsync(id);
 
@@ -43,37 +43,28 @@ namespace BasicCSharpRESTful.Controllers
 
         // PUT: api/Resources/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutResources(int id, Resources resources)
+        public async Task<IActionResult> PutResources(int id, ResourcesV1 resources)
         {
-            if (id != resources.Id)
-            {
-                return BadRequest();
-            }
+               if (id != resources.Id)
+               {
+                    return BadRequest();
+               }
 
-            _context.Entry(resources).State = EntityState.Modified;
+               try
+               {
+                    _context.Database.ExecuteSqlCommand("resourcesUpdate @p0, @p1, @p2, @p3, @p4", parameters: new[] { id.ToString(), resources.Title, resources.Description, resources.Link, resources.Langues });
+               }
+               catch (Exception e)
+               {
+                    return BadRequest(e);
+               }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ResourcesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+               return NoContent();
+          }
 
         // POST: api/Resources
         [HttpPost]
-        public async Task<ActionResult<Resources>> PostResources(Resources resources)
+        public async Task<ActionResult<ResourcesV1>> PostResources(ResourcesV1 resources)
         {
             _context.Resources.Add(resources);
             await _context.SaveChangesAsync();
@@ -83,7 +74,7 @@ namespace BasicCSharpRESTful.Controllers
 
         // DELETE: api/Resources/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Resources>> DeleteResources(int id)
+        public async Task<ActionResult<ResourcesV1>> DeleteResources(int id)
         {
             var resources = await _context.Resources.FindAsync(id);
             if (resources == null)

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 namespace BasicCSharpRESTful.Models
 {
      [JsonObject, Serializable]
-     public partial class Commands
+     public partial class CommandsV1
      {
           public int Id { get; set; }
-          public string Tile { get; set; }
+          public string Title { get; set; }
           public string Command { get; set; }
           public string ConsoleType { get; set; }
      }
@@ -16,6 +16,6 @@ namespace BasicCSharpRESTful.Models
      [JsonObject, Serializable]
      public partial class CommandList
      {
-          public List<Commands> commandList = new List<Commands>();
+          public List<CommandsV1> commandList = new List<CommandsV1>();
      }
 }

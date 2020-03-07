@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace BasicCSharpRESTful.Models
 {
      [JsonObject, Serializable]
-     public partial class Exercises
+     public partial class ExercisesV1
      {
           public int Id { get; set; }
           public string Exercise { get; set; }
@@ -20,6 +20,6 @@ namespace BasicCSharpRESTful.Models
      [JsonObject, Serializable]
      public partial class ExerciseList
      {
-          public List<Exercises> exerciseList = new List<Exercises>();
+          public List<ExercisesV1> exerciseList = new List<ExercisesV1>();
      }
 }
